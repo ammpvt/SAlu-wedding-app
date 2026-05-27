@@ -289,7 +289,6 @@ guestForm.addEventListener('submit', async (e) => {
   const isEventValid = validateField(eventInput, document.getElementById('event-error'));
   
   if (!isNameValid || !isCategoryValid || !isHeadcountValid || !isEventValid) {
-    // Focus first invalid element
     const firstInvalid = document.querySelector('.has-error .form-control');
     if (firstInvalid) firstInvalid.focus();
     showToast('Please correct the highlighted form errors.', 'error');
@@ -317,17 +316,17 @@ guestForm.addEventListener('submit', async (e) => {
   };
   
   try {
-    // Submit using simple request (mode: no-cors) to bypass preflight OPTIONS blocks
+    // The correct way to send data to Google Apps Script
     await fetch(API_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8", 
+      }
     });
     
     // Clear form & reset defaults
     resetRegistryForm();
-    
-    // Show success notification
     showToast('Guest registered successfully!', 'success');
     
     // Refresh stats after a small delay
@@ -337,23 +336,7 @@ guestForm.addEventListener('submit', async (e) => {
     
   } catch (error) {
     console.error('Submission failed:', error);
-    showToast('Network error occurred. Retrying connection...', 'warning');
-    
-    // Attempt standard fetch fallback if no-cors rejected
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      resetRegistryForm();
-      showToast('Guest registered successfully!', 'success');
-      setTimeout(() => {
-        fetchDashboardStats();
-      }, 1500);
-    } catch (fallbackError) {
-      console.error('Fallback submission failed:', fallbackError);
-      showToast('Failed to save guest. Check internet connection and try again.', 'error');
-    }
+    showToast('Failed to save guest. Check internet connection and try again.', 'error');
   } finally {
     // Reset button states
     submitBtn.disabled = false;
