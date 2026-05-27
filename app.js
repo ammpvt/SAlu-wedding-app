@@ -2,7 +2,7 @@
 // Application Configuration & State
 // ==========================================================================
 
-const API_URL = 'https://script.google.com/macros/s/AKfycby2yGTwl6hBoaeesbmfG5pSTPXxFFm4lBPn9kKGGjf7XOXuhd-WQrq1fGMhanovPuwB/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyWJTBlJKmCbYzX13kqGnJEwVETRpbutm6KyIjEldwzSUOgPKQZp9P1Us991DYI-awx/exec';
 const TARGET_CAPACITY = 3200;
 
 // DOM Elements
