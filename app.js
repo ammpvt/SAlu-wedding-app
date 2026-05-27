@@ -316,9 +316,10 @@ guestForm.addEventListener('submit', async (e) => {
   };
   
   try {
-    // The correct way to send data to Google Apps Script
+    // The ultimate fix to bypass browser security blocks
     await fetch(API_URL, {
       method: 'POST',
+      mode: 'no-cors', // Tells the browser not to block the request
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "text/plain;charset=utf-8", 
